@@ -6,41 +6,42 @@ require_relative 'lib/SecretWordArrays.rb'
 
 #start game by choosing a saved game or new game
 puts "Would you like to start a new game or load a saved game? Enter new or save"
-startGameResponse = gets.chomp.downcase
-unless startGameResponse == "new" or startGameResponse == "save"
+start_game_response = gets.chomp.downcase
+until start_game_response == "new" or start_game_response == "save"
   puts "Please, only enter new or save. Thank you"
+  start_game_response = gets.chomp.downcase
 end
 
-if startGameResponse == 'new'
+if start_game_response == 'new'
   #for new game
-  newWord = ComputerPlayer.new(0,0,'','')
-  playerOne = HumanPlayer.new(0,'',[])
-  newWord.pickTheWord()
-  newWord.setTheBlanks()
+  new_word = Computer_Player.new(0,0,'','')
+  player_one = Human_Player.new(0,'',[])
+  new_word.pick_the_word()
+  new_word.set_the_blanks()
   #puts newWord.theWord #for debugging
 
 else
   #for saved game
-  playerOne = HumanPlayer.from_json('gameSave.json')
-  newWord = ComputerPlayer.from_json('computerSave.json')
-  newWord.drawHangMan()
-  puts "#{playerOne.guessArray}"
+  player_one = Human_Player.from_json('game_save.json')
+  new_word = Computer_Player.from_json('computer_save.json')
+  new_word.draw_hang_man()
+  puts "#{player_one.guess_array}"
 end
 
-puts  newWord.numberOfBlanksToFill,''
+puts  new_word.number_of_blanks_to_fill,''
 
 #game loop
-while playerOne.winner == false && newWord.winner == false && playerOne.pullThePlug == false
-  playerOne.playerTurn()
-  newWord.checkTheLetter(playerOne.letterGuessed)
-  newWord.drawHangMan()
-  playerOne.checkForWin(newWord.numberOfBlanksToFill,newWord.winner)
+while player_one.winner == false && new_word.winner == false && player_one.pull_the_plug == false
+  player_one.player_turn()
+  new_word.check_the_letter(player_one.letter_guessed)
+  new_word.draw_hang_man()
+  player_one.check_for_win(new_word.number_of_blanks_to_fill,new_word.winner)
   
-  if playerOne.winner == true || newWord.winner == true
-    playerOne.playAgain(newWord.winner)
+  if player_one.winner == true || new_word.winner == true
+    player_one.play_again(new_word.winner)
   end
 
-  if playerOne.pullThePlug == true
+  if player_one.pull_the_plug== true
     puts "Would you like to save your game?"
     exit_response = gets.chomp.downcase
     unless exit_response == "yes" || exit_response == "no"
@@ -51,18 +52,18 @@ while playerOne.winner == false && newWord.winner == false && playerOne.pullTheP
       puts "Bye!"
     else
       puts "Saving..."
-      playerOne.to_json()
-      newWord.to_json()
+      player_one.to_json()
+      new_word.to_json()
       puts "Game saved. See you next time!"
     end
   end
   
-  if playerOne.reset == true
-    newWord.newGame(playerOne.letterGuessed, playerOne.guessArray, playerOne.winner)
-    newWord.pickTheWord()
-    newWord.setTheBlanks()
+  if player_one.reset == true
+    new_word.new_game(player_one.letter_guessed, player_one.guess_array, player_one.winner)
+    new_word.pick_the_word()
+    new_word.set_the_blanks()
     #puts newWord.theWord # for debugging
-    puts  newWord.numberOfBlanksToFill,''
-    playerOne.reset = false
+    puts  new_word.number_of_blanks_to_fill,''
+    player_one.reset = false
   end
 end
