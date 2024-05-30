@@ -1,82 +1,82 @@
-class HumanPlayer 
+class Human_Player 
 
-  attr_accessor :score, :winner, :letterGuessed, :guessArray, :reset, :pullThePlug
-  def initialize(score, letterGuessed, guessArray)
+  attr_accessor :score, :winner, :letter_guessed, :guess_array, :reset, :pull_the_plug
+  def initialize(score, letter_guessed, guess_array)
     @score = score
 
-    @letterGuessed= letterGuessed
-    @guessArray = guessArray
+    @letter_guessed= letter_guessed
+    @guess_array = guess_array
     @reset = false
     @winner = false
-    @pullThePlug = false
+    @pull_the_plug = false
   end
 
   def to_json #method for saving player data to json file if quitting
-    File.write('gameSave.json',JSON.dump({
+    File.write('game_save.json',JSON.dump({
       :score => @score,
-      :letterGuessed => @letterGuessed,
-      :guessArray=> @guessArray
+      :letter_guessed => @letter_guessed,
+      :guess_array=> @guess_array
     }))
   end
 
-  def self.from_json(playerSave) #for loading json data from previous save to instance of HumanPlayer class
-    saveFile = File.read(playerSave)
-    data = JSON.parse(saveFile) 
-    self.new(data['score'],data['letterGuessed'],data['guessArray'])
+  def self.from_json(player_save) #for loading json data from previous save to instance of HumanPlayer class
+    save_file = File.read(player_save)
+    data = JSON.parse(save_file) 
+    self.new(data['score'],data['letter_guessed'],data['guess_array'])
   end
 
 
-  def playerTurn() #method for entering a guess letter
+  def player_turn() #method for entering a guess letter
     puts "What letter would you like to guess?"
     puts "Type exit to quit."
-    @letterGuessed = gets.chomp 
-    unless @letterGuessed.length < 2 || @letterGuessed == "exit" #only allows 1 letter guesses or the word 'exit' to be entered
+    @letter_guessed = gets.chomp 
+    unless @letter_guessed.length < 2 || @letter_guessed == "exit" #only allows 1 letter guesses or the word 'exit' to be entered
       puts "Only enter one letter or the word exit. Thank you!"
-      @letterGuessed = gets.chomp
+      @letter_guessed = gets.chomp
     end
     #for exiting the game
-    if @letterGuessed == "exit"
-      @pullThePlug = true
+    if @letter_guessed == "exit"
+      @pull_the_plug = true
 
     else
-      @letterGuessed.downcase!
-      @guessArray << @letterGuessed #guess array used to show player what letters they have used so far to avoid duplicates
+      @letter_guessed.downcase!
+      @guess_array << @letter_guessed #guess array used to show player what letters they have used so far to avoid duplicates
     end
   end
 
-  def checkForWin(word, computerWinner) 
+  def check_for_win(word, computer_winner) 
     unless word.include?("_") #checks if the numberOfBlanksToFill variable has any dashes left. If they have all been filled the player got all the letters and won.
       @score += 1
       puts "You Win! Your score is #{@score} \n"
       @winner = true
 
       else 
-        if @guessArray.length > 0 && computerWinner == false #if the hangman isn't full the array of guessed letters is printed unless there are no letters in the array (for the start of a new game)
-          puts "\n#{@guessArray} \n"
+        if @guess_array.length > 0 && computer_winner == false #if the hangman isn't full the array of guessed letters is printed unless there are no letters in the array (for the start of a new game)
+          puts "\n#{@guess_array} \n"
         end
     end
   end
 
-  def playAgain(computerWinner) #method to go through if you want a rematch
+  def play_again(computer_winner) #method to go through if you want a rematch
     puts "Do you want to play again?"
-    playAgain = gets.chomp
-    playAgain.downcase!
+    play_again = gets.chomp
+    play_again.downcase!
 
-    until playAgain == "yes" or playAgain == "no" #only allows yes or no responses
+    until play_again == "yes" or play_again == "no" #only allows yes or no responses
       puts "Enter yes or no only!"
-      playAgain = gets.chomp
-      playAgain.downcase!
+      play_again = gets.chomp
+      play_again.downcase!
     end
 
-    if playAgain == "no" #if response is no it breaks the game loop
+    if play_again == "no" #if response is no it breaks the game loop
       puts "\nBYEEEEE!"
       @winner = true
-      computerWinner = true
+      computer_winner = true
 
     else
       puts "\nLet's start over" #if response is yes (the only other acceptable response) it begins the reset loop in the game loop
       @winner = false
-      computerWinner = false
+      computer_winner = false
       @reset = true
     end
   end
