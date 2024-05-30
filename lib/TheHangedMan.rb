@@ -1,20 +1,20 @@
-module TheHangedMan #all the parts to draw a hangman character 
-  @@topRow =              " |----|"
-  @@fullHead =            " |  (\ˣ-\ˣ) "
-  @@armsAndBodyRow =      " |   /|\\"
-  @@legsRow =             " |   / \\"
-  @@baseRow =             "/ \\" 
-  @@blankRow =            " | "
+module The_Hanged_Man #all the parts to draw a hangman character 
+  @@top_row =              " |----|"
+  @@full_head =            " |  (\ˣ-\ˣ) "
+  @@arms_and_body_row =      " |   /|\\"
+  @@legs_row =             " |   / \\"
+  @@base_row =             "/ \\" 
+  @@blank_row =            " | "
   @@torso =               " |    | "
-  @@leftArm =             " |   /|"
-  @@leftLeg =             " |   /"
-  @@blankHead =           " |  (   ) "
+  @@left_arm =             " |   /|"
+  @@left_leg =             " |   /"
+  @@blank_head =           " |  (   ) "
   @@mouth =               " |  ( _ ) "
-  @@leftEye =             " |  (\ˣ- ) "
+  @@left_eye =             " |  (\ˣ- ) "
 
-  def self.setHangedMan #class method to create a blank hangman
-    @@hangedManArray = [@@topRow, @@blankRow, @@blankRow,@@blankRow,@@baseRow]
+  def self.set_hanged_man #class method to create a blank hangman
+    @@hanged_man_array = [@@top_row, @@blank_row, @@blank_row,@@blank_row,@@base_row]
   end
-  setHangedMan()
+  set_hanged_man()
 
 end
